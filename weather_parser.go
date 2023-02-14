@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type Weather struct {
@@ -36,8 +39,62 @@ func parseWeather(data []byte) {
 	err := json.Unmarshal(data, &weather)
 	if err != nil {
 	}
-	for _, value := range weather.Hourly.Temperature2M {
-		fmt.Println(value)
+	//weather.cleanWeather()
+	currentTime := time.Now()
+
+	var day = currentTime.String()
+	day = day[:10]
+
+	var lastEntry int
+	var firstEntry int
+
+	for i, s := range weather.Hourly.Time {
+		if strings.Contains(s, day) {
+		} else {
+			lastEntry = i
+			break
+		}
+
+		var currentHour = currentTime.Hour()
+		hour, err := strconv.Atoi(s[11:13])
+		if err != nil {
+			fmt.Println("Int Conversion failed")
+		}
+		if hour < currentHour {
+			firstEntry = i
+		}
+	}
+	displayWeather(firstEntry, lastEntry)
+}
+
+/*
+func (w *Weather) cleanWeather() {
+	currentTime := time.Now()
+
+	var day = currentTime.String()
+	day = day[:10]
+
+	fmt.Println(day)
+	var result []string
+	for _, s := range w.Hourly.Time {
+		//fmt.Println(s)
+		if strings.Contains(s, day) {
+			result = append(result, s)
+		}
+	}
+	w.Hourly.Time = result
+	result = nil
+	var currentHour = currentTime.Hour()
+
+	for i, s := range w.Hourly.Time {
+		hour,err := strconv.ParseInt(s[10:12], 2,64)
+		if err != nil {
+			fmt.Println("Int Conversion failed")
+		}
+		if hour >= currentHour {
+			result = append(result, s)
+		}
 	}
 
-}
+	fmt.Println(result)
+} */
