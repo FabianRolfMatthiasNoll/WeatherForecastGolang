@@ -3,48 +3,56 @@ package main
 import (
 	"fmt"
 	"github.com/jedib0t/go-pretty/v6/table"
+	"github.com/jedib0t/go-pretty/v6/text"
 	"os"
+	// https://github.com/jedib0t/go-pretty Repository of the pretty tables
 )
 
 func displayWeather(firstIndex, LastIndex int, weather Weather, cityName string) {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Time", "Temperature", "Rain", "Showers", "Cloud%", "Humidity"})
+	t.AppendHeader(table.Row{"Time", "Temperature", "Rain", "Showers", "Clouds", "Humidity"})
 
 	fmt.Println("You are currently viewing the weather of: ", cityName)
 
 	for i := firstIndex; i <= LastIndex; i = i + 2 {
 		time := weather.Hourly.Time[i][11:13] + ":00"
-		temp := weather.Hourly.Temperature2M[i]
-		rain := weather.Hourly.Rain[i]
-		shower := weather.Hourly.Showers[i]
-		clouds := weather.Hourly.Cloudcover[i]
-		humidity := weather.Hourly.Relativehumidity2M[i]
+		temp := fmt.Sprintf("%.1f°C", weather.Hourly.Temperature2M[i])
+		rain := fmt.Sprintf("%.1fmm", weather.Hourly.Rain[i])
+		shower := fmt.Sprintf("%dmm", weather.Hourly.Showers[i])
+		clouds := fmt.Sprintf("%d", weather.Hourly.Cloudcover[i]) + "%"
+		humidity := fmt.Sprintf("%d", weather.Hourly.Relativehumidity2M[i]) + "%"
 		//fmt.Print("|", weather.Hourly.Time[i][11:13], ":00")
 		t.AppendRow([]interface{}{time, temp, rain, shower, clouds, humidity})
 	}
-
-	//fmt.Print("\nTemperature: ")
-	for i := firstIndex; i <= LastIndex; i = i + 2 {
-		//fmt.Print("|", weather.Hourly.Temperature2M[i])
-	}
-	//fmt.Print("\nCloudcoverage: ")
-	for i := firstIndex; i <= LastIndex; i = i + 2 {
-		//fmt.Print("|", weather.Hourly.Cloudcover[i])
-	}
-	//fmt.Print("\nHumidity: ")
-	for i := firstIndex; i <= LastIndex; i = i + 2 {
-		//fmt.Print("|", weather.Hourly.Relativehumidity2M[i])
-	}
-	//fmt.Print("\nRain: ")
-	for i := firstIndex; i <= LastIndex; i = i + 2 {
-		//fmt.Print("|", weather.Hourly.Rain[i])
-	}
-	//fmt.Print("\nShowers: ")
-	for i := firstIndex; i <= LastIndex; i = i + 2 {
-		//fmt.Print("|", weather.Hourly.Showers[i])
-	}
 	t.SetStyle(table.StyleColoredBlackOnBlueWhite)
+	t.SetColumnConfigs([]table.ColumnConfig{
+		{
+			Name:   "Temperature",
+			Align:  text.AlignRight,
+			VAlign: text.VAlignMiddle,
+		},
+		{
+			Name:   "Rain",
+			Align:  text.AlignRight,
+			VAlign: text.VAlignMiddle,
+		},
+		{
+			Name:   "Showers",
+			Align:  text.AlignRight,
+			VAlign: text.VAlignMiddle,
+		},
+		{
+			Name:   "Clouds",
+			Align:  text.AlignRight,
+			VAlign: text.VAlignMiddle,
+		},
+		{
+			Name:   "Humidity",
+			Align:  text.AlignRight,
+			VAlign: text.VAlignMiddle,
+		},
+	})
 	t.Render()
 }
