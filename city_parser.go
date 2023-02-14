@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/csv"
-	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type cityData struct {
@@ -14,22 +14,27 @@ type cityData struct {
 }
 
 func getCoordinates(cityName string) (float64, float64) {
+
+	cityName = strings.ToLower(cityName)
+
 	csvFile, err := os.Open("assets/world-cities.csv")
 	if err != nil {
-		fmt.Println("File not Found")
+		return 0, 0
 	}
 	defer func(csvFile *os.File) {
 		err := csvFile.Close()
 		if err != nil {
-			fmt.Println("File couldn't be closed")
+			return
 		}
 	}(csvFile)
 
 	csvLines, err := csv.NewReader(csvFile).ReadAll()
 	if err != nil {
-		fmt.Println("Input not readable")
+		return 1, 1
 	}
+
 	for _, line := range csvLines {
+		line[0] = strings.ToLower(line[0])
 		if cityName == line[0] {
 			city := cityData{}
 			if long, err := strconv.ParseFloat(line[2], 64); err == nil {
