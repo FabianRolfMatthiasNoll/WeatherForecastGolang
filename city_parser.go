@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type cityData struct {
+type CityData struct {
 	CityName  string
 	Longitude float64
 	Latitude  float64
@@ -16,6 +16,7 @@ type cityData struct {
 func getCoordinates(cityName string) (float64, float64) {
 
 	cityName = strings.ToLower(cityName)
+	city := &CityData{}
 
 	csvFile, err := os.Open("assets/world-cities.csv")
 	if err != nil {
@@ -36,13 +37,14 @@ func getCoordinates(cityName string) (float64, float64) {
 	for _, line := range csvLines {
 		line[0] = strings.ToLower(line[0])
 		if cityName == line[0] {
-			city := cityData{}
+
 			if long, err := strconv.ParseFloat(line[3], 64); err == nil {
 				city.Longitude = long
 			}
 			if lat, err := strconv.ParseFloat(line[2], 64); err == nil {
 				city.Latitude = lat
 			}
+			city.CityName = line[0]
 			return city.Longitude, city.Latitude
 		}
 	}

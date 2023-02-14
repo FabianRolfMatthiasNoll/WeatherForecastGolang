@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func getWeatherData(long, lat float64) {
+func getWeatherData(long, lat float64, cityName string) {
 	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&hourly=temperature_2m,relativehumidity_2m,rain,showers,cloudcover", lat, long)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -29,5 +29,5 @@ func getWeatherData(long, lat float64) {
 	if readErr != nil {
 		fmt.Println(readErr.Error())
 	}
-	parseWeather(body)
+	parseWeather(body, cityName)
 }

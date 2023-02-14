@@ -34,7 +34,7 @@ type Weather struct {
 	} `json:"hourly"`
 }
 
-func parseWeather(data []byte) {
+func parseWeather(data []byte, cityName string) {
 	var weather Weather
 	err := json.Unmarshal(data, &weather)
 	if err != nil {
@@ -56,15 +56,19 @@ func parseWeather(data []byte) {
 		}
 
 		var currentHour = currentTime.Hour()
+		//If its over 15 minutes we can start with the next hour
+		if currentTime.Minute() > 15 {
+			currentHour++
+		}
 		hour, err := strconv.Atoi(s[11:13])
 		if err != nil {
 			fmt.Println("Int Conversion failed")
 		}
 		if hour < currentHour {
-			firstEntry = i
+			firstEntry = i + 1
 		}
 	}
-	displayWeather(firstEntry, lastEntry)
+	displayWeather(firstEntry, lastEntry, weather, cityName)
 }
 
 /*
