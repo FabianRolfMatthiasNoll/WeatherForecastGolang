@@ -37,10 +37,10 @@ func getCoordinates(cityName string) (float64, float64) {
 		line[0] = strings.ToLower(line[0])
 		if cityName == line[0] {
 			city := cityData{}
-			if long, err := strconv.ParseFloat(line[2], 64); err == nil {
+			if long, err := strconv.ParseFloat(line[3], 64); err == nil {
 				city.Longitude = long
 			}
-			if lat, err := strconv.ParseFloat(line[3], 64); err == nil {
+			if lat, err := strconv.ParseFloat(line[2], 64); err == nil {
 				city.Latitude = lat
 			}
 			return city.Longitude, city.Latitude
