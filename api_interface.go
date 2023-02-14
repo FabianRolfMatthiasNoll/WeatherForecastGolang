@@ -29,5 +29,5 @@ func getWeatherData(long, lat float64) {
 	if readErr != nil {
 		fmt.Println(readErr.Error())
 	}
-	fmt.Println(string(body))
+	parseWeather(body)
 }
