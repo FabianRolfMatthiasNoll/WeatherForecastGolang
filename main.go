@@ -12,7 +12,8 @@ func main() {
 		Longitude, Latitude := getCoordinates(arg)
 		getWeatherData(Longitude, Latitude, strings.ToUpper(arg))
 	} else {
-		Longitude, Latitude := getCoordinates("Tuttlingen")
-		getWeatherData(Longitude, Latitude, "Tuttlingen")
+		cityName := getCity()
+		Longitude, Latitude := getCoordinates(cityName)
+		getWeatherData(Longitude, Latitude, strings.ToUpper(cityName))
 	}
 }
