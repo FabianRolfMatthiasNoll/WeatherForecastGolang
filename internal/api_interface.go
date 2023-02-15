@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-func GetWeatherData(long, lat float64) ([]byte, error) {
-	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&hourly=temperature_2m,relativehumidity_2m,rain,showers,cloudcover", lat, long)
+type API []byte
+
+func (API) GetData(url string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
-
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 
@@ -31,4 +31,9 @@ func GetWeatherData(long, lat float64) ([]byte, error) {
 		return nil, readErr
 	}
 	return body, nil
+}
+
+func (API) CreateAPILink(long, lat float64) string {
+	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&hourly=temperature_2m,relativehumidity_2m,rain,showers,cloudcover", lat, long)
+	return url
 }
