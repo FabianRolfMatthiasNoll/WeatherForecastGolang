@@ -28,7 +28,7 @@ type Weather struct {
 		Temperature2M      []float64 `json:"temperature_2m"`
 		Relativehumidity2M []int     `json:"relativehumidity_2m"`
 		Rain               []float64 `json:"rain"`
-		Showers            []int     `json:"showers"`
+		Showers            []float64 `json:"showers"`
 		Cloudcover         []int     `json:"cloudcover"`
 	} `json:"hourly"`
 }

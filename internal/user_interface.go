@@ -30,7 +30,7 @@ func DisplayWeather(firstIndex, LastIndex int, weather Weather, cityName string)
 		time := weather.Hourly.Time[i][11:13] + ":00"
 		temp := fmt.Sprintf("%.1f°C", weather.Hourly.Temperature2M[i])
 		rain := fmt.Sprintf("%.1fmm", weather.Hourly.Rain[i])
-		shower := fmt.Sprintf("%dmm", weather.Hourly.Showers[i])
+		shower := fmt.Sprintf("%.2fmm", weather.Hourly.Showers[i])
 		clouds := fmt.Sprintf("%d", weather.Hourly.Cloudcover[i]) + "%"
 		humidity := fmt.Sprintf("%d", weather.Hourly.Relativehumidity2M[i]) + "%"
 		//fmt.Print("|", weather.Hourly.Time[i][11:13], ":00")
