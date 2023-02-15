@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"errors"
 	"os"
 	"strconv"
 	"strings"
@@ -13,14 +14,14 @@ type CityData struct {
 	Latitude  float64
 }
 
-func getCoordinates(cityName string) (float64, float64) {
+func getCoordinates(cityName string) (float64, float64, error) {
 
 	cityName = strings.ToLower(cityName)
 	city := &CityData{}
 
 	csvFile, err := os.Open("assets/world-cities.csv")
 	if err != nil {
-		return 0, 0
+		return 0, 0, err
 	}
 	defer func(csvFile *os.File) {
 		err := csvFile.Close()
@@ -31,7 +32,7 @@ func getCoordinates(cityName string) (float64, float64) {
 
 	csvLines, err := csv.NewReader(csvFile).ReadAll()
 	if err != nil {
-		return 1, 1
+		return 0, 0, err
 	}
 
 	for _, line := range csvLines {
@@ -45,8 +46,9 @@ func getCoordinates(cityName string) (float64, float64) {
 				city.Latitude = lat
 			}
 			city.CityName = line[0]
-			return city.Longitude, city.Latitude
+			return city.Longitude, city.Latitude, nil
 		}
 	}
-	return 0, 0
+	err404 := errors.New("city not found in Database")
+	return 0, 0, err404
 }

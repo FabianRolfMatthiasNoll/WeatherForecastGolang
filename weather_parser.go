@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -34,15 +33,18 @@ type Weather struct {
 	} `json:"hourly"`
 }
 
-func parseWeather(data []byte) (Weather, int, int) {
+func parseWeather(data []byte) (Weather, int, int, error) {
+
 	var weather Weather
+
 	err := json.Unmarshal(data, &weather)
 	if err != nil {
+		return Weather{}, 0, 0, err
 	}
-	currentTime := time.Now()
 
+	currentTime := time.Now()
 	var day = currentTime.String()
-	day = day[:10]
+	day = day[:10] //cutting off everything that doesn't include the date
 
 	var lastEntry int
 	var firstEntry int
@@ -61,11 +63,11 @@ func parseWeather(data []byte) (Weather, int, int) {
 		}
 		hour, err := strconv.Atoi(s[11:13])
 		if err != nil {
-			fmt.Println("Int Conversion failed")
+			return Weather{}, 0, 0, err
 		}
 		if hour < currentHour {
 			firstEntry = i + 1
 		}
 	}
-	return weather, firstEntry, lastEntry
+	return weather, firstEntry, lastEntry, nil
 }
