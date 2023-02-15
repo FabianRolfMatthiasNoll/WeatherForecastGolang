@@ -19,7 +19,7 @@ func GetCoordinates(cityName string) (float64, float64, error) {
 	cityName = strings.ToLower(cityName)
 	city := &CityData{}
 
-	csvFile, err := os.Open("assets/world-cities.csv")
+	csvFile, err := os.Open("../assets/world-cities.csv")
 	if err != nil {
 		return 0, 0, err
 	}
