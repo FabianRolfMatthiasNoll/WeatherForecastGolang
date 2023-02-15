@@ -34,12 +34,11 @@ type Weather struct {
 	} `json:"hourly"`
 }
 
-func parseWeather(data []byte, cityName string) {
+func parseWeather(data []byte) (Weather, int, int) {
 	var weather Weather
 	err := json.Unmarshal(data, &weather)
 	if err != nil {
 	}
-	//weather.cleanWeather()
 	currentTime := time.Now()
 
 	var day = currentTime.String()
@@ -68,37 +67,5 @@ func parseWeather(data []byte, cityName string) {
 			firstEntry = i + 1
 		}
 	}
-	displayWeather(firstEntry, lastEntry, weather, cityName)
+	return weather, firstEntry, lastEntry
 }
-
-/*
-func (w *Weather) cleanWeather() {
-	currentTime := time.Now()
-
-	var day = currentTime.String()
-	day = day[:10]
-
-	fmt.Println(day)
-	var result []string
-	for _, s := range w.Hourly.Time {
-		//fmt.Println(s)
-		if strings.Contains(s, day) {
-			result = append(result, s)
-		}
-	}
-	w.Hourly.Time = result
-	result = nil
-	var currentHour = currentTime.Hour()
-
-	for i, s := range w.Hourly.Time {
-		hour,err := strconv.ParseInt(s[10:12], 2,64)
-		if err != nil {
-			fmt.Println("Int Conversion failed")
-		}
-		if hour >= currentHour {
-			result = append(result, s)
-		}
-	}
-
-	fmt.Println(result)
-} */
