@@ -6,14 +6,18 @@ import (
 )
 
 func main() {
+	var Longitude, Latitude float64
+	var cityName string
+
 	argLength := len(os.Args[1:])
 	if argLength > 0 {
-		arg := os.Args[1]
-		Longitude, Latitude := getCoordinates(arg)
-		getWeatherData(Longitude, Latitude, strings.ToUpper(arg))
+		cityName = os.Args[1]
+		Longitude, Latitude = getCoordinates(cityName)
 	} else {
-		cityName := getCity()
-		Longitude, Latitude := getCoordinates(cityName)
-		getWeatherData(Longitude, Latitude, strings.ToUpper(cityName))
+		cityName = getCity()
+		Longitude, Latitude = getCoordinates(cityName)
 	}
+	weatherData := getWeatherData(Longitude, Latitude)
+	weather, firstEntry, lastEntry := parseWeather(weatherData)
+	displayWeather(firstEntry, lastEntry, weather, strings.ToUpper(cityName))
 }
