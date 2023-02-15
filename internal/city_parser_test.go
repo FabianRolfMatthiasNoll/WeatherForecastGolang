@@ -19,7 +19,7 @@ var parseTests = []cityParseTest{
 func TestCityParse(t *testing.T) {
 
 	for _, test := range parseTests {
-		gotLong, gotLat, err := GetCoordinates(test.cityName)
+		gotLong, gotLat, err := CityData.GetCoordinates(CityData{}, test.cityName)
 		if gotLong != test.wantLong || gotLat != test.wantLat || err != test.errWant {
 			t.Errorf("got Long: %.4f, wanted: %.4f // got Lat: %.4f, wanted: %.4f // got err: %d, wanted: %d", gotLong, test.wantLong, gotLat, test.wantLat, err, test.errWant)
 		}
