@@ -6,14 +6,15 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
 	"os"
+	"strings"
 	// https://github.com/jedib0t/go-pretty Repository of the pretty tables
 )
 
 func getCity() (city string) {
 	fmt.Print("Please enter the city you want a weather report from: ")
 	reader := bufio.NewReader(os.Stdin)
-	text, _ := reader.ReadString('\n')
-	city = text
+	input, _ := reader.ReadString('\n')
+	city = strings.TrimRight(input, "\r\n")
 	return
 }
 
@@ -64,4 +65,6 @@ func displayWeather(firstIndex, LastIndex int, weather Weather, cityName string)
 		},
 	})
 	t.Render()
+	//Placeholder so that the .exe stays open after displaying the weather
+	fmt.Scanf("h")
 }
