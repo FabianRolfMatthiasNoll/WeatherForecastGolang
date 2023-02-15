@@ -33,7 +33,7 @@ type Weather struct {
 	} `json:"hourly"`
 }
 
-func ParseWeather(data []byte) (Weather, int, int, error) {
+func (Weather) ParseWeather(data []byte) (Weather, int, int, error) {
 
 	var weather Weather
 

@@ -14,7 +14,7 @@ type CityData struct {
 	Latitude  float64
 }
 
-func GetCoordinates(cityName string) (float64, float64, error) {
+func (CityData) GetCoordinates(cityName string) (float64, float64, error) {
 
 	cityName = strings.ToLower(cityName)
 	city := &CityData{}
