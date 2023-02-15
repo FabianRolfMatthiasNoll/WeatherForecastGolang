@@ -1,13 +1,14 @@
-package cmd
+package app
 
 import (
 	"WeatherForecastGolang/internal"
 	"fmt"
 	"strings"
+	"time"
 )
 
 // Build: go build -o ..\bin\Weather_Forecast_App
-// IMplement interfaces that are needed
+// Implement interfaces that are needed
 func Run(cityName string) {
 	var Longitude, Latitude float64
 	var err error
@@ -22,14 +23,17 @@ func Run(cityName string) {
 	}
 	if err != nil {
 		fmt.Println(err.Error())
+		time.Sleep(30 * time.Second)
 	}
-
 	weatherData, err := internal.GetWeatherData(Longitude, Latitude)
-
+	if err != nil {
+		fmt.Println(err.Error())
+		time.Sleep(30 * time.Second)
+	}
 	weather, firstEntry, lastEntry, err := internal.ParseWeather(weatherData)
 	if err != nil {
 		fmt.Println(err.Error())
+		time.Sleep(30 * time.Second)
 	}
-
 	internal.DisplayWeather(firstEntry, lastEntry, weather, strings.ToUpper(cityName))
 }
