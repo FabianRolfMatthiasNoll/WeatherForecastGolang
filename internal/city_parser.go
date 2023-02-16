@@ -1,9 +1,7 @@
 package internal
 
 import (
-	"encoding/csv"
-	"errors"
-	"os"
+	"WeatherForecastGolang/assets"
 	"strconv"
 	"strings"
 )
@@ -15,40 +13,18 @@ type CityData struct {
 }
 
 func (CityData) GetCoordinates(cityName string) (float64, float64, error) {
-
-	cityName = strings.ToLower(cityName)
-	city := &CityData{}
-
-	csvFile, err := os.Open("../assets/world-cities.csv")
-	if err != nil {
-		return 0, 0, err
-	}
-	defer func(csvFile *os.File) {
-		err := csvFile.Close()
-		if err != nil {
-			return
-		}
-	}(csvFile)
-
-	csvLines, err := csv.NewReader(csvFile).ReadAll()
-	if err != nil {
-		return 0, 0, err
-	}
-
-	for _, line := range csvLines {
-		line[0] = strings.ToLower(line[0])
-		if cityName == line[0] {
-
-			if long, err := strconv.ParseFloat(line[3], 64); err == nil {
-				city.Longitude = long
+	var Longitude, Latitude float64
+	var err error
+	for _, city := range assets.WorldCities {
+		if strings.Contains(city[0], cityName) {
+			if Longitude, err = strconv.ParseFloat(city[2], 64); err != nil {
+				return 0, 0, err
 			}
-			if lat, err := strconv.ParseFloat(line[2], 64); err == nil {
-				city.Latitude = lat
+			if Latitude, err = strconv.ParseFloat(city[1], 64); err != nil {
+				return 0, 0, err
 			}
-			city.CityName = line[0]
-			return city.Longitude, city.Latitude, nil
+			break
 		}
 	}
-	err404 := errors.New("city not found in Database")
-	return 0, 0, err404
+	return Longitude, Latitude, nil
 }
