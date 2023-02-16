@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+//go:generate go run generate-csv.go
+
 func main() {
 	argLength := len(os.Args[1:])
 	if argLength > 0 {
