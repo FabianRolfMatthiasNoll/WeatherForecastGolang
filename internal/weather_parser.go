@@ -50,8 +50,8 @@ func (Weather) ParseWeather(data []byte, clock time.Time) (*Weather, int, int, e
 
 	for i, s := range weather.Hourly.Time {
 		if strings.Contains(s, day) {
-		} else {
 			lastEntry = i
+		} else {
 			break
 		}
 
