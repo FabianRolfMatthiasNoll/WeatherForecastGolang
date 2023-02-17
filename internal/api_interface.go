@@ -6,9 +6,13 @@ import (
 	"net/http"
 )
 
-type API []byte
+type API struct {
+	url  string
+	body []byte
+}
 
-func (API) GetData(url string) ([]byte, error) {
+func (api API) GetData(url string) ([]byte, error) {
+	var readErr error
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -26,14 +30,14 @@ func (API) GetData(url string) ([]byte, error) {
 		}
 	}(res.Body)
 
-	body, readErr := io.ReadAll(res.Body)
+	api.body, readErr = io.ReadAll(res.Body)
 	if readErr != nil {
 		return nil, readErr
 	}
-	return body, nil
+	return api.body, nil
 }
 
-func (API) CreateAPILink(long, lat float64) string {
-	url := fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&hourly=temperature_2m,relativehumidity_2m,rain,showers,cloudcover", lat, long)
-	return url
+func (api API) CreateAPILink(long, lat float64) string {
+	api.url = fmt.Sprintf("https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&hourly=temperature_2m,relativehumidity_2m,rain,showers,cloudcover", lat, long)
+	return api.url
 }
