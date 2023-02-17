@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+//Build: go build -o ..\bin\Weather_Forecast_App
+//Running the Linter: golangci-lint run
 //go:generate go run generate-csv.go
 
 func main() {
