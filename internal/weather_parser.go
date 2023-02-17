@@ -33,17 +33,16 @@ type Weather struct {
 	} `json:"hourly"`
 }
 
-func (Weather) ParseWeather(data []byte) (Weather, int, int, error) {
+func (Weather) ParseWeather(data []byte, clock time.Time) (*Weather, int, int, error) {
 
 	var weather Weather
 
 	err := json.Unmarshal(data, &weather)
 	if err != nil {
-		return Weather{}, 0, 0, err
+		return &Weather{}, 0, 0, err
 	}
 
-	currentTime := time.Now()
-	var day = currentTime.String()
+	var day = clock.String()
 	day = day[:10] //cutting off everything that doesn't include the date
 
 	var lastEntry int
@@ -56,18 +55,18 @@ func (Weather) ParseWeather(data []byte) (Weather, int, int, error) {
 			break
 		}
 
-		var currentHour = currentTime.Hour()
+		var currentHour = clock.Hour()
 		//If its over 15 minutes we can start with the next hour
-		if currentTime.Minute() > 15 {
+		if clock.Minute() > 15 {
 			currentHour++
 		}
 		hour, err := strconv.Atoi(s[11:13])
 		if err != nil {
-			return Weather{}, 0, 0, err
+			return &Weather{}, 0, 0, err
 		}
 		if hour < currentHour {
 			firstEntry = i + 1
 		}
 	}
-	return weather, firstEntry, lastEntry, nil
+	return &weather, firstEntry, lastEntry, nil
 }
