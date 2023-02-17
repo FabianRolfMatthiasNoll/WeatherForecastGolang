@@ -18,7 +18,7 @@ func GetCity() (city string) {
 	return
 }
 
-func DisplayWeather(firstIndex, LastIndex int, weather Weather, cityName string) {
+func DisplayWeather(firstIndex, LastIndex int, weather *Weather, cityName string) {
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
