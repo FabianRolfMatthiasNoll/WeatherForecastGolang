@@ -1,0 +1,26 @@
+image: golangci/golangci-lint
+
+stages:
+- lint
+- test
+- build
+
+lint:
+  stage: lint
+  script: 
+    - task install-golangci-lint
+    - task lint
+
+.test:
+  stage: test
+  script: 
+    - unittest -v
+
+.build-amd64:
+  stage: build
+  script:
+
+.build-arm64:
+  stage: build
+  script: 
+
